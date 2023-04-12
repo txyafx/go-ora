@@ -352,12 +352,14 @@ func (dataSet *DataSet) Next(dest []driver.Value) error {
 		}
 	}
 
-	if dataSet.index%noOfRowsToFetch < len(dataSet.rows) {
-		for x := 0; x < len(dataSet.rows[dataSet.index%noOfRowsToFetch]); x++ {
-			dest[x] = dataSet.rows[dataSet.index%noOfRowsToFetch][x]
+	if noOfRowsToFetch != 0 {
+		if dataSet.index%noOfRowsToFetch < len(dataSet.rows) {
+			for x := 0; x < len(dataSet.rows[dataSet.index%noOfRowsToFetch]); x++ {
+				dest[x] = dataSet.rows[dataSet.index%noOfRowsToFetch][x]
+			}
+			dataSet.index++
+			return nil
 		}
-		dataSet.index++
-		return nil
 	}
 	return io.EOF
 }
